@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class AppUser(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
-  avatar_url = models.CharField(max_length=100, blank=True)
+  avatar_url = models.URLField(blank=True)
   is_admin = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
