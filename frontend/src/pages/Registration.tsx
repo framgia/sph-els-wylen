@@ -34,17 +34,10 @@ function Registration() {
       target: { id, value, checked }
     } = event
 
-    if (id === 'is_admin') {
-      setUser(prevState => ({
-        ...prevState,
-        [id]: checked
-      }))
-    } else {
-      setUser(prevState => ({
-        ...prevState,
-        [id]: value
-      }))
-    }
+    setUser(prevState => ({
+      ...prevState,
+      [id]: id === 'is_admin' ? checked : value
+    }))
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
