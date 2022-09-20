@@ -33,7 +33,7 @@ class LoginUser(APIView):
     if email and password:
       user = authenticate(request=request, username=email, password=password)
 
-      if user is not None:
+      if user:
         login(request, user)
         return Response(None, status=status.HTTP_200_OK)
       else:
