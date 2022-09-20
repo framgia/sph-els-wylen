@@ -8,7 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
   email = serializers.CharField(max_length=150, required=True)
   is_admin = serializers.BooleanField(required=False)
   password = serializers.CharField(
-    max_length=255, 
+    min_length=8,
+    max_length=32, 
     required=True, 
     write_only=True,
     style={'input_type': 'password'},
