@@ -33,11 +33,16 @@ class LoginUser(APIView):
     if email and password:
       user = authenticate(request=request, username=email, password=password)
 
+      response = None
+
       if user:
         login(request, user)
-        return Response(None, status=status.HTTP_200_OK)
+        response = Response({'email': email}, status=status.HTTP_200_OK)
       else:
-        return Response(None, status=status.HTTP_401_UNAUTHORIZED)
+        response = Response(None, status=status.HTTP_401_UNAUTHORIZED)
+
+      return response
+
     else:
       raise serializers.ValidationError()
 
