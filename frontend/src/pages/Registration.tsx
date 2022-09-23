@@ -21,7 +21,8 @@ function Registration() {
 
   async function registerUser() {
     try {
-      await client.post(`${apiUrls.REGISTRATION}`, user)
+      let response = await client.post(`${apiUrls.REGISTRATION}`, user)
+
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(`${err.request.status} ${err.request.statusText}`);
