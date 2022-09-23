@@ -27,4 +27,8 @@ function PrivateRoute() {
     return <Navigate to={routes.LOGIN} state={{ from: location }} replace />
 }
 
+<<<<<<< HEAD
 export default PrivateRoute
+=======
+export default PrivateRoute
+>>>>>>> 964a6e6 (Implement login and role-based private routing)
