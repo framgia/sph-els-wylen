@@ -3,12 +3,25 @@ import routes from "../constants/routes";
 import useAuth from "../hooks/useAuth"
 import Admin from "./Admin";
 import User from "./User";
+import { sessionCookie } from "../cookieStorage";
+import { useEffect } from "react";
+import { logoutUser } from "../apiClient/authService";
 
 function PrivateRoute() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
+  const loggedInUser = localStorage.getItem('user');
   const location = useLocation();
 
-  if (user?.first_name && user?.last_name && user?.email)
+  useEffect(() => {
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+    } else {
+      logoutUser();
+      window.location.reload()
+    }
+  }, [loggedInUser, setUser])
+
+  if (loggedInUser && sessionCookie)
     return user.is_admin ? <Admin /> : <User />
   else
     return <Navigate to={routes.LOGIN} state={{ from: location }} replace />

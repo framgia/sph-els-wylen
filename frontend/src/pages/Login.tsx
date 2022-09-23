@@ -1,51 +1,19 @@
 import axios from 'axios';
 import { useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap';
-import apiUrls from '../constants/apiUrls';
-import axiosConfig from '../constants/axiosConfig';
 import AuthCredentials from '../interfaces/authCredentials';
-import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import routes from '../constants/routes';
-
-const client = axios.create(axiosConfig);
+import { loginUser } from '../apiClient/authService';
 
 function Login() {
-  const { setUser } = useAuth();
-
   const navigate = useNavigate();
-
 
   const [error, setError] = useState<string>('')
   const [credentials, setCredentials] = useState<AuthCredentials>({
     email: '',
     password: '',
   });
-
-
-  async function loginUser() {
-    try {
-      let response = await client.post(`${apiUrls.LOGIN}`, credentials)
-      setUser(response.data.user)
-      navigate(routes.ROOT, { replace: true })
-
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(err);
-        setError(`${err.request.status} ${err.request.statusText}`);
-      }
-    }
-  }
-
-  async function logoutUser() {
-    try {
-      let response = await client.post(`${apiUrls.LOGOUT}`)
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(`${err.request.status} ${err.request.statusText}`);
-      }
-    }
-  }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const {
@@ -58,9 +26,19 @@ function Login() {
     }))
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    loginUser();
+    try {
+      let response = await loginUser(credentials);
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+      navigate(routes.ROOT, { replace: true })
+      window.location.reload()
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(`${err.request.status} ${err.request.statusText}`);
+      }
+    }
+
   }
 
   const renderAlert = error ? (
@@ -103,10 +81,6 @@ function Login() {
         </Button>
       </Form>
 
-      <br />
-      <Button variant="primary" type="submit" onClick={logoutUser}>
-        Logout
-      </Button>
     </div>
   )
 }
