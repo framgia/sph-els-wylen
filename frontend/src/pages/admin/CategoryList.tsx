@@ -1,12 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import { getCategory, listCategories, updateCategory } from "../../apiClient/categoryService";
+import { deleteCategory, getCategory, listCategories, updateCategory } from "../../apiClient/categoryService";
+import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import Category from "../../interfaces/category"
 
 function CategoryList() {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category>({
     title: "",
@@ -19,6 +22,9 @@ function CategoryList() {
 
   const handleCloseEditModal = () => setShowEditModal(false);
   const handleShowEditModal = () => setShowEditModal(true);
+
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
+  const handleShowDeleteModal = () => setShowDeleteModal(true);
 
   async function listAllCategories() {
     try {
@@ -47,6 +53,16 @@ function CategoryList() {
   async function updateCurrentCategory(category: Category) {
     try {
       await updateCategory(category);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(`${err.request.status} ${err.request.statusText}`)
+      }
+    }
+  }
+
+  async function deleteCurrentCategory(id: number) {
+    try {
+      await deleteCategory(id);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
@@ -92,6 +108,10 @@ function CategoryList() {
                 <Button
                   size="sm"
                   variant="danger"
+                  onClick={() => {
+                    getCurrentCategory(id ?? 0);
+                    handleShowDeleteModal()
+                  }}
                 >
                   Delete
                 </Button>
@@ -107,6 +127,13 @@ function CategoryList() {
         handleClose={handleCloseEditModal}
         category={currentCategory}
         handleUpdate={updateCurrentCategory}
+      />
+
+      <DeleteCategoryModal
+        show={showDeleteModal}
+        handleClose={handleCloseDeleteModal}
+        handleDelete={deleteCurrentCategory}
+        id={currentCategory.id ?? 0}
       />
     </div>
   )

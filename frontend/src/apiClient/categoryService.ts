@@ -21,9 +21,14 @@ const updateCategory = async (category: Category) => {
     `${apiUrls.CATEGORY}${id}`, { title, description })
 }
 
+const deleteCategory = async (id: number) => {
+  await axiosClient.delete(`${apiUrls.CATEGORY}${id}`);
+}
+
 export {
   createCategory,
   listCategories,
   getCategory,
   updateCategory,
+  deleteCategory,
 }
