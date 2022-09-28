@@ -62,6 +62,8 @@ function CategoryList() {
   async function updateCurrentCategory(category: Category) {
     try {
       await updateCategory(category);
+      handleCloseEditModal();
+      window.location.reload();
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
@@ -72,6 +74,8 @@ function CategoryList() {
   async function deleteCurrentCategory(id: number) {
     try {
       await deleteCategory(id);
+      handleCloseDeleteModal();
+      window.location.reload();
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
