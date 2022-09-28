@@ -7,6 +7,7 @@ import { createQuestion } from "../../apiClient/questionService";
 import AddWordModal from "../../components/AddWordModal";
 import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
+import WordListModal from "../../components/WordListModal";
 import Category from "../../interfaces/category"
 import Choice from "../../interfaces/choice";
 import Question from "../../interfaces/question";
@@ -15,6 +16,7 @@ function CategoryList() {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showAddWordModal, setShowAddWordModal] = useState<boolean>(false);
+  const [showWordListModal, setShowWordListModal] = useState<boolean>(false);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category>({
@@ -34,6 +36,10 @@ function CategoryList() {
 
   const handleCloseAddWordModal = () => setShowAddWordModal(false);
   const handleShowAddWordModal = () => setShowAddWordModal(true);
+
+  const handleCloseWordListModal = () => setShowWordListModal(false);
+  const handleShowWordListModal = () => setShowWordListModal(true);
+
 
   async function listAllCategories() {
     try {
@@ -121,6 +127,17 @@ function CategoryList() {
               <td>
                 <Button
                   size="sm"
+                  variant="light"
+                  className="me-2"
+                  onClick={() => {
+                    getCurrentCategory(id ?? 0);
+                    handleShowWordListModal()
+                  }}
+                >
+                  Word List
+                </Button>
+                <Button
+                  size="sm"
                   variant="secondary"
                   className="me-2"
                   onClick={() => {
@@ -157,6 +174,12 @@ function CategoryList() {
 
         </tbody>
       </Table>
+
+      <WordListModal
+        show={showWordListModal}
+        handleClose={handleCloseWordListModal}
+        categoryId={currentCategory.id ?? 0}
+      />
 
       <AddWordModal
         show={showAddWordModal}
