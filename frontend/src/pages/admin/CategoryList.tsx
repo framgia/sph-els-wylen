@@ -2,13 +2,19 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
 import { deleteCategory, getCategory, listCategories, updateCategory } from "../../apiClient/categoryService";
+import { createChoice } from "../../apiClient/choiceService";
+import { createQuestion } from "../../apiClient/questionService";
+import AddWordModal from "../../components/AddWordModal";
 import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import Category from "../../interfaces/category"
+import Choice from "../../interfaces/choice";
+import Question from "../../interfaces/question";
 
 function CategoryList() {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showAddWordModal, setShowAddWordModal] = useState<boolean>(false);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category>({
@@ -25,6 +31,9 @@ function CategoryList() {
 
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
   const handleShowDeleteModal = () => setShowDeleteModal(true);
+
+  const handleCloseAddWordModal = () => setShowAddWordModal(false);
+  const handleShowAddWordModal = () => setShowAddWordModal(true);
 
   async function listAllCategories() {
     try {
@@ -70,6 +79,25 @@ function CategoryList() {
     }
   }
 
+  async function createQuestionWithChoices(word: Question, choices: Choice[]) {
+    try {
+      const response = await createQuestion(word);
+      const questionId = response.data.id;
+      for (let choice of choices) {
+        await createChoice({
+          ...choice,
+          question: questionId
+        })
+      }
+      handleCloseAddWordModal();
+      window.location.reload();
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(`${err.request.status} ${err.request.statusText}`)
+      }
+    }
+  }
+
   return (
     <div className="container pt-5">
       <h2>Categories</h2>
@@ -91,6 +119,10 @@ function CategoryList() {
                   size="sm"
                   variant="secondary"
                   className="me-2"
+                  onClick={() => {
+                    getCurrentCategory(id ?? 0);
+                    handleShowAddWordModal()
+                  }}
                 >
                   Add word
                 </Button>
@@ -121,6 +153,13 @@ function CategoryList() {
 
         </tbody>
       </Table>
+
+      <AddWordModal
+        show={showAddWordModal}
+        handleClose={handleCloseAddWordModal}
+        categoryId={currentCategory.id ?? 0}
+        handleCreateQuestionWithChoices={createQuestionWithChoices}
+      />
 
       <EditCategoryModal
         show={showEditModal}
