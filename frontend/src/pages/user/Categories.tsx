@@ -7,10 +7,6 @@ import Category from "../../interfaces/category"
 function Categories() {
   const [categories, setCategories] = useState<Category[]>([])
 
-  useEffect(() => {
-    listAllCategories();
-  }, [])
-
   async function listAllCategories() {
     try {
       const allCategories = (await listCategories()).data;
@@ -21,6 +17,10 @@ function Categories() {
       }
     }
   }
+
+  useEffect(() => {
+    listAllCategories();
+  }, [])
 
   return (
     <div className="container pt-5">
