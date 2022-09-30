@@ -80,7 +80,7 @@ class Category(models.Model):
 
 
 class Lesson(models.Model):
-  user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=False)
+  user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=False, related_name='lessons')
   category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
@@ -110,7 +110,7 @@ class Choice(models.Model):
 
 
 class Answer(models.Model):
-  lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=False)
+  lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=False, related_name="answers")
   question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=False)
   choice = models.OneToOneField(Choice, on_delete=models.CASCADE)
   value = models.CharField(max_length=100, blank=False)
