@@ -100,7 +100,7 @@ class ListQuestionByCategory(generics.ListAPIView):
   def get_queryset(self):
     queryset = Question.objects.all()
     category = self.request.query_params.get('category')
-    if category is not None:
+    if category:
         queryset = queryset.filter(category_id=category)
     return queryset
 
