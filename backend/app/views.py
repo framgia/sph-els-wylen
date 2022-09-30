@@ -24,11 +24,13 @@ class RegisterUser(APIView):
 
 
 class ListUser(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   queryset = AppUser.objects.all()
   serializer_class = UserSerializer
 
 
 class GetUpdateDeleteUser(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
   queryset = AppUser.objects.all()
   serializer_class = UserSerializer
 
