@@ -23,7 +23,7 @@ function Categories() {
   }, [])
 
   return (
-    <div className="container pt-5">
+    <div className="container">
       <h2>Categories</h2>
       <Row xs={1} md={2} xl={4} className="g-4 pt-4">
         {categories.map(({ id, title, description }) => (

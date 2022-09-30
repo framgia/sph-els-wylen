@@ -53,7 +53,7 @@ function AddCategory() {
   ) : ''
 
   return (
-    <div className='sm-container'>
+    <div className="sm-container pt-5">
       <h2>Add Category</h2>
 
       <Form method="POST" onSubmit={handleSubmit}>

@@ -52,7 +52,7 @@ function Registration() {
 
 
   return (
-    <div className='sm-container'>
+    <div className="sm-container pt-5">
       <h2>Registration</h2>
 
       <Form onSubmit={handleSubmit}>
