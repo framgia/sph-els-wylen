@@ -104,7 +104,7 @@ class ListQuestionByCategory(generics.ListAPIView):
     queryset = Question.objects.all()
     category = self.request.query_params.get('category')
     if category:
-        queryset = queryset.filter(category_id=category)
+      queryset = queryset.filter(category_id=category)
     return queryset
 
 
@@ -118,6 +118,17 @@ class GetUpdateDeleteChoice(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Choice.objects.all()
   serializer_class = ChoiceSerializer
+
+
+class ListChoiceByQuestion(generics.ListAPIView):
+  serializer_class = ChoiceSerializer
+
+  def get_queryset(self):
+    queryset = Choice.objects.all()
+    question = self.request.query_params.get('question')
+    if question:
+      queryset = queryset.filter(question_id=question)
+    return queryset
 
 
 class ListCreateLesson(generics.ListCreateAPIView):
