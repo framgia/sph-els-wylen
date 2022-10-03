@@ -8,7 +8,7 @@ import AddWordModal from "../../components/AddWordModal";
 import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import WordListModal from "../../components/WordListModal";
-import Category from "../../interfaces/category"
+import { Category } from "../../interfaces/category"
 import Choice from "../../interfaces/choice";
 import Question from "../../interfaces/question";
 
@@ -20,6 +20,7 @@ function CategoryList() {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentCategory, setCurrentCategory] = useState<Category>({
+    id: 0,
     title: "",
     description: ""
   })

@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Alert, Button, Form } from "react-bootstrap"
 import { createCategory } from "../../apiClient/categoryService"
-import Category from "../../interfaces/category"
+import { CategoryCreation } from "../../interfaces/category"
 
 function AddCategory() {
   const emptyCategory = {
@@ -10,7 +10,7 @@ function AddCategory() {
     description: ""
   }
 
-  const [category, setCategory] = useState<Category>(emptyCategory)
+  const [category, setCategory] = useState<CategoryCreation>(emptyCategory)
   const [alert, setAlert] = useState({
     message: '',
     is_success: false
