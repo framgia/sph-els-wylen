@@ -1,8 +1,8 @@
 import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
-import Question from "../interfaces/question";
+import { QuestionCreation } from "../interfaces/question";
 
-const createQuestion = async (question: Question) => {
+const createQuestion = async (question: QuestionCreation) => {
   return await axiosClient.post(`${apiUrls.QUESTION}`, question)
 }
 

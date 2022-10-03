@@ -10,7 +10,7 @@ import EditCategoryModal from "../../components/EditCategoryModal";
 import WordListModal from "../../components/WordListModal";
 import { Category } from "../../interfaces/category"
 import Choice from "../../interfaces/choice";
-import Question from "../../interfaces/question";
+import { QuestionCreation } from "../../interfaces/question";
 
 function CategoryList() {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -90,7 +90,7 @@ function CategoryList() {
     }
   }
 
-  async function createQuestionWithChoices(word: Question, choices: Choice[]) {
+  async function createQuestionWithChoices(word: QuestionCreation, choices: Choice[]) {
     try {
       const response = await createQuestion(word);
       const questionId = response.data.id;
