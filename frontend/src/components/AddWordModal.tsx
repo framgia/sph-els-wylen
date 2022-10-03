@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal, Row, Col } from 'react-bootstrap'
-import Choice from '../interfaces/choice';
+import { ChoiceCreation } from '../interfaces/choice';
 import { QuestionCreation } from '../interfaces/question';
 
 interface Props {
   show: boolean,
   categoryId: number,
   handleClose: () => void,
-  handleCreateQuestionWithChoices: (word: QuestionCreation, choice: Choice[]) => void
+  handleCreateQuestionWithChoices: (word: QuestionCreation, choice: ChoiceCreation[]) => void
 }
 
 function AddWordModal(props: Props) {
@@ -19,7 +19,7 @@ function AddWordModal(props: Props) {
   } = props;
 
   const [word, setWord] = useState<QuestionCreation>({ value: "" });
-  const [choices, setChoices] = useState<Choice[]>([
+  const [choices, setChoices] = useState<ChoiceCreation[]>([
     { value: "", is_correct_answer: false },
     { value: "", is_correct_answer: false },
     { value: "", is_correct_answer: false },

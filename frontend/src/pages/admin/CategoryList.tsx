@@ -9,7 +9,7 @@ import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import WordListModal from "../../components/WordListModal";
 import { Category } from "../../interfaces/category"
-import Choice from "../../interfaces/choice";
+import { ChoiceCreation } from "../../interfaces/choice";
 import { QuestionCreation } from "../../interfaces/question";
 
 function CategoryList() {
@@ -90,7 +90,7 @@ function CategoryList() {
     }
   }
 
-  async function createQuestionWithChoices(word: QuestionCreation, choices: Choice[]) {
+  async function createQuestionWithChoices(word: QuestionCreation, choices: ChoiceCreation[]) {
     try {
       const response = await createQuestion(word);
       const questionId = response.data.id;
