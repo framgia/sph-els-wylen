@@ -6,6 +6,12 @@ const createAnswer = async (answer: AnswerCreation) => {
   return await axiosClient.post(`${apiUrls.ANSWER}`, answer)
 }
 
+const listAnswersByLesson = async (lessonId: number) => {
+  return await axiosClient.get(`answers?lesson=${lessonId}`)
+}
+
+
 export {
   createAnswer,
+  listAnswersByLesson,
 }
