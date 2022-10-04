@@ -17,8 +17,8 @@ function LessonResult() {
 
   const [lesson, setLesson] = useState<Lesson>({
     id: 0,
-    user: 0,
-    category: 0,
+    userId: 0,
+    categoryId: 0,
     answers: []
   })
   const [category, setCategory] = useState<Category>({

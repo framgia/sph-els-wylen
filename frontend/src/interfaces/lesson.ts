@@ -1,13 +1,13 @@
 export interface LessonCreation {
   id?: number,
-  user: number,
-  category: number,
+  userId: number,
+  categoryId: number,
   answers?: number[]
 }
 
 export interface Lesson {
   id: number,
-  user: number,
-  category: number,
+  userId: number,
+  categoryId: number,
   answers: number[]
 }

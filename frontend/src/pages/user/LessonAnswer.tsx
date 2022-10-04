@@ -20,8 +20,8 @@ function LessonAnswer() {
 
   const [lesson, setLesson] = useState<Lesson>({
     id: 0,
-    user: 0,
-    category: 0,
+    userId: 0,
+    categoryId: 0,
     answers: []
   })
   const [category, setCategory] = useState<Category>({
@@ -34,13 +34,19 @@ function LessonAnswer() {
 
   async function getCurrentLesson(id: number) {
     try {
-      const response = await getLesson(id);
-      const lesson = response.data;
-      if (lesson) {
-        setLesson(lesson);
-        getCurrentCategory(lesson.category);
-        listWordsFromCategory(lesson.category);
+      const responseData = (await getLesson(id)).data;
+      const lessonData: Lesson = {
+        id: responseData.id,
+        userId: responseData.user,
+        categoryId: responseData.category,
+        answers: responseData.answers
+      };
+      if (lessonData) {
+        setLesson(lessonData);
+        getCurrentCategory(lessonData.categoryId);
+        listWordsFromCategory(lessonData.categoryId);
       }
+
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
@@ -73,6 +79,7 @@ function LessonAnswer() {
       }
     }
   }
+
   useEffect(() => {
     if (lessonId) {
       getCurrentLesson(lessonId);

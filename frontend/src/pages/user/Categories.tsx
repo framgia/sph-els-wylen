@@ -40,8 +40,8 @@ function Categories() {
   async function createNewLesson(categoryId: number, userId: number) {
     try {
       const newLesson: LessonCreation = {
-        category: categoryId,
-        user: userId,
+        categoryId,
+        userId,
       }
       let response = await createLesson(newLesson);
       handleNavigateLesson(response.data.id);
