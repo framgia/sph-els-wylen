@@ -153,3 +153,14 @@ class GetUpdateDeleteAnswer(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
+
+
+class ListAnswerByLesson(generics.ListAPIView):
+  serializer_class = AnswerSerializer
+
+  def get_queryset(self):
+    queryset = Answer.objects.all()
+    lesson = self.request.query_params.get('lesson')
+    if lesson:
+      queryset = queryset.filter(lesson_id=lesson)
+    return queryset
