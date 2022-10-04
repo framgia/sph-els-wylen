@@ -9,6 +9,7 @@ enum Routes {
   // User Routes
   CATEGORIES = "/categories",
   LESSON = "/lesson",
+  RESULT = "/result",
 }
 
 export default Routes;
