@@ -10,7 +10,12 @@ const listQuestionsByCategory = async (categoryId: number) => {
   return await axiosClient.get(`questions?category=${categoryId}`)
 }
 
+const getQuestion = async (id: number) => {
+  return await axiosClient.get(`${apiUrls.QUESTION}${id}`)
+}
+
 export {
   createQuestion,
-  listQuestionsByCategory
+  listQuestionsByCategory,
+  getQuestion,
 };
