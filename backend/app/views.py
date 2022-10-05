@@ -137,6 +137,16 @@ class ListCreateLesson(generics.ListCreateAPIView):
   queryset = Lesson.objects.all()
   serializer_class = LessonSerializer
 
+  def perform_create(self, serializer):
+    instance = serializer.save()
+    activity = {
+      'user': self.request.user.id,
+      'lesson': instance.id,
+    }
+    activity_serializer = UserActivitySerializer(data=activity)
+    activity_serializer.is_valid(raise_exception=True)
+    activity_serializer.save()
+
 
 class GetUpdateDeleteLesson(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
@@ -171,6 +181,16 @@ class FollowUser(generics.ListCreateAPIView):
   permission_classes = [IsAuthenticated]
   queryset = UserRelation.objects.all()
   serializer_class = UserRelationSerializer
+
+  def perform_create(self, serializer):
+    instance = serializer.save()
+    activity = {
+      'user': self.request.user.id,
+      'following_user': instance.following_user.id,
+    }
+    activity_serializer = UserActivitySerializer(data=activity)
+    activity_serializer.is_valid(raise_exception=True)
+    activity_serializer.save()
 
 
 class UnfollowUser(generics.DestroyAPIView):
