@@ -219,3 +219,20 @@ class ListFollowingByUser(generics.ListAPIView):
     if user:
       queryset = queryset.filter(follower_user_id=user)
     return queryset
+
+
+class ListActivity(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = UserActivity.objects.all()
+  serializer_class = UserActivitySerializer
+
+
+class ListActivityByUser(generics.ListAPIView):
+  serializer_class = UserActivitySerializer
+
+  def get_queryset(self):
+    queryset = UserActivity.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(user_id=user)
+    return queryset
