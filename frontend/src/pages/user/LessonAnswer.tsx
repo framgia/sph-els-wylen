@@ -105,7 +105,7 @@ function LessonAnswer() {
     }
   }
 
-  const renderQuestion = category.questions.length && (
+  const renderQuestion = category.questions.length ? (
     <div className="pt-5">
       <h1>{category.questions[currentIndex].value}</h1>
       <Row xs={1} md={2} className="g-2 pt-5">
@@ -121,13 +121,17 @@ function LessonAnswer() {
         ))}
       </Row>
     </div>
-  )
+  ) : <p className="fst-italic text-center">No questions in this category yet</p>
+
+  const renderProgress = category.questions.length ? (
+    <h5>{currentIndex + 1} out of {category.questions.length}</h5>
+  ) : ''
 
   return (
     <div className="sm-container pt-5">
       <Stack direction="horizontal">
         <h5 className="me-auto">{lesson.categoryTitle}</h5>
-        <h5>{currentIndex + 1} out of {category.questions.length}</h5>
+        {renderProgress}
       </Stack>
       {renderQuestion}
     </div>
