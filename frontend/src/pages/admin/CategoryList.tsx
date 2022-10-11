@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { Button, Table } from "react-bootstrap"
-import { deleteCategory, getCategory, listCategories, updateCategory } from "../../apiClient/categoryService";
+import { deleteCategory, listCategories, updateCategory } from "../../apiClient/categoryService";
 import { createChoice } from "../../apiClient/choiceService";
 import { createQuestion } from "../../apiClient/questionService";
 import AddWordModal from "../../components/AddWordModal";
@@ -58,26 +58,12 @@ function CategoryList() {
       const response = await listCategories();
       const allCategoriesData = response.data;
       setCategories(allCategoriesData);
-      console.log(allCategoriesData);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
       }
     }
   }
-
-  // async function getCurrentCategory(id: number) {
-  //   try {
-  //     const category = (await getCategory(id)).data;
-  //     if (category) {
-  //       setCurrentCategory(category)
-  //     }
-  //   } catch (err) {
-  //     if (axios.isAxiosError(err)) {
-  //       console.log(`${err.request.status} ${err.request.statusText}`)
-  //     }
-  //   }
-  // }
 
   async function updateCurrentCategory(category: CategoryCreation) {
     try {
