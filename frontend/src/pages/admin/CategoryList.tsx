@@ -8,7 +8,7 @@ import AddWordModal from "../../components/AddWordModal";
 import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 import EditCategoryModal from "../../components/EditCategoryModal";
 import WordListModal from "../../components/WordListModal";
-import { Category } from "../../interfaces/category"
+import { Category, CategoryCreation } from "../../interfaces/category"
 import { ChoiceCreation } from "../../interfaces/choice";
 import { QuestionCreation } from "../../interfaces/question";
 
@@ -22,7 +22,18 @@ function CategoryList() {
   const [currentCategory, setCurrentCategory] = useState<Category>({
     id: 0,
     title: "",
-    description: ""
+    description: "",
+    questions: [{
+      id: 0,
+      category: 0,
+      value: '',
+      choices: [{
+        id: 0,
+        question: 0,
+        value: '',
+        is_correct_answer: false,
+      }]
+    }]
   })
 
   useEffect(() => {
@@ -44,8 +55,10 @@ function CategoryList() {
 
   async function listAllCategories() {
     try {
-      const allCategories = (await listCategories()).data;
-      setCategories(allCategories);
+      const response = await listCategories();
+      const allCategoriesData = response.data;
+      setCategories(allCategoriesData);
+      console.log(allCategoriesData);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
@@ -53,20 +66,20 @@ function CategoryList() {
     }
   }
 
-  async function getCurrentCategory(id: number) {
-    try {
-      const category = (await getCategory(id)).data;
-      if (category) {
-        setCurrentCategory(category)
-      }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(`${err.request.status} ${err.request.statusText}`)
-      }
-    }
-  }
+  // async function getCurrentCategory(id: number) {
+  //   try {
+  //     const category = (await getCategory(id)).data;
+  //     if (category) {
+  //       setCurrentCategory(category)
+  //     }
+  //   } catch (err) {
+  //     if (axios.isAxiosError(err)) {
+  //       console.log(`${err.request.status} ${err.request.statusText}`)
+  //     }
+  //   }
+  // }
 
-  async function updateCurrentCategory(category: Category) {
+  async function updateCurrentCategory(category: CategoryCreation) {
     try {
       await updateCategory(category);
       handleCloseEditModal();
@@ -121,7 +134,7 @@ function CategoryList() {
           </tr>
         </thead>
         <tbody>
-          {categories.map(({ id, title, description }) => (
+          {categories.map(({ id, title, description, questions }) => (
             <tr key={id} >
               <td>{title}</td>
               <td>{description}</td>
@@ -131,8 +144,8 @@ function CategoryList() {
                   variant="light"
                   className="me-2"
                   onClick={() => {
-                    getCurrentCategory(id ?? 0);
-                    handleShowWordListModal()
+                    setCurrentCategory({ id, title, description, questions });
+                    handleShowWordListModal();
                   }}
                 >
                   Word List
@@ -142,8 +155,8 @@ function CategoryList() {
                   variant="secondary"
                   className="me-2"
                   onClick={() => {
-                    getCurrentCategory(id ?? 0);
-                    handleShowAddWordModal()
+                    setCurrentCategory({ id, title, description, questions });
+                    handleShowAddWordModal();
                   }}
                 >
                   Add word
@@ -153,8 +166,8 @@ function CategoryList() {
                   variant="primary"
                   className="me-2"
                   onClick={() => {
-                    getCurrentCategory(id ?? 0);
-                    handleShowEditModal()
+                    setCurrentCategory({ id, title, description, questions });
+                    handleShowEditModal();
                   }}
                 >
                   Edit
@@ -163,7 +176,7 @@ function CategoryList() {
                   size="sm"
                   variant="danger"
                   onClick={() => {
-                    getCurrentCategory(id ?? 0);
+                    setCurrentCategory({ id, title, description, questions });
                     handleShowDeleteModal()
                   }}
                 >
@@ -179,13 +192,13 @@ function CategoryList() {
       <WordListModal
         show={showWordListModal}
         handleClose={handleCloseWordListModal}
-        categoryId={currentCategory.id ?? 0}
+        category={currentCategory}
       />
 
       <AddWordModal
         show={showAddWordModal}
         handleClose={handleCloseAddWordModal}
-        categoryId={currentCategory.id ?? 0}
+        categoryId={currentCategory.id}
         handleCreateQuestionWithChoices={createQuestionWithChoices}
       />
 
@@ -200,9 +213,9 @@ function CategoryList() {
         show={showDeleteModal}
         handleClose={handleCloseDeleteModal}
         handleDelete={deleteCurrentCategory}
-        id={currentCategory.id ?? 0}
+        id={currentCategory.id}
       />
-    </div>
+    </div >
   )
 }
 
