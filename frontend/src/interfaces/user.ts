@@ -24,3 +24,25 @@ export interface UserProfile {
   last_name: string;
   avatar_url?: string;
 }
+
+export interface Follower {
+  id: number,
+  followerId: number,
+  follwerName: string,
+}
+
+export interface Following {
+  id: number,
+  followingId: number,
+  follwingName: string,
+}
+
+export interface UserProfileRelations {
+  id: number,
+  fullName: string,
+  avatarUrl?: string,
+  followingNumber: number,
+  followingRelation: Following[],
+  followerNumber: number,
+  followerRelation: Follower[],
+}
