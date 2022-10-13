@@ -71,6 +71,13 @@ class UserRelation(models.Model):
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+  def __str__(self):
+    return f'{self.follower_user.first_name} {self.follower_user.last_name} follows {self.following_user.first_name} {self.following_user.last_name}'
+
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(fields=["follower_user", "following_user"], name="unique_follow_relation")
+    ]
 
 class Category(models.Model):
   title = models.CharField(max_length=100, blank=False)
