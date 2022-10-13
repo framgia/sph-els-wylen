@@ -47,3 +47,26 @@ div.container h2 {
   height: 100px;
   width: 100px;
 }
+
+.activity-container {
+  display: flex;
+  align-items: center;
+  margin: 16px auto;
+  padding: 16px;
+  border: solid 1px lightgray;
+  border-radius: 16px;
+  gap: 32px;
+}
+
+.activity-detail {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.caption {
+  color: gray;
+}
+
+.caption:first-letter {
+  text-transform: uppercase;
+}
