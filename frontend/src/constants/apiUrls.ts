@@ -7,6 +7,7 @@ enum ApiUrls {
   LOGOUT = "logout/",
   CATEGORY = "categories/",
   USER = "users/",
+  PROFILE = "profile/",
   QUESTION = "questions/",
   CHOICE = "choices/",
   LESSON = "lessons/",
