@@ -9,14 +9,14 @@ const getRelation = async (followerId: number, followingId: number) => {
   return await axiosClient.get(`get_relation?follower=${followerId}&following=${followingId}`);
 };
 
-const follow = async (followerId: number, followingId: number) => {
+const followUser = async (followerId: number, followingId: number) => {
   return axiosClient.post(`${apiUrls.FOLLOW}`, {
     "follower_user": followerId,
     "following_user": followingId,
   });
 };
 
-const unfollow = async (followerId: number, followingId: number) => {
+const unfollowUser = async (followerId: number, followingId: number) => {
   const relationResponse = await getRelation(followerId, followingId);
   const relation = relationResponse.data;
   return axiosClient.delete(`${apiUrls.UNFOLLOW}${relation.id}`);
@@ -25,6 +25,6 @@ const unfollow = async (followerId: number, followingId: number) => {
 export {
   checkRelationExists,
   getRelation,
-  follow,
-  unfollow,
+  followUser,
+  unfollowUser,
 };

@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { listActivitiesByUser } from "../../apiClient/activityService";
-import { checkRelationExists, follow, unfollow } from "../../apiClient/relationService";
+import { checkRelationExists, followUser, unfollowUser } from "../../apiClient/relationService";
 import { getUserProfile } from "../../apiClient/userService";
 import Avatar from "../../components/Avatar";
 import FollowListModal from "../../components/FollowListModal";
@@ -103,7 +103,7 @@ function Profile() {
 
   async function handleFollow() {
     try {
-      const response = await follow(user.id, userParamsId);
+      const response = await followUser(user.id, userParamsId);
       if (response.status === 201) {
         setIsFollowing(true);
       }
@@ -116,7 +116,7 @@ function Profile() {
 
   async function handleUnfollow() {
     try {
-      const response = await unfollow(user.id, userParamsId);
+      const response = await unfollowUser(user.id, userParamsId);
       if (response.status === 204) {
         setIsFollowing(false);
       }
