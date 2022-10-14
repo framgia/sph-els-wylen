@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useMemo, useState } from "react";
+import { ListGroup } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { listActivitiesByUser } from "../../apiClient/activityService";
 import { checkRelationExists, follow, unfollow } from "../../apiClient/relationService";
 import { getUserProfile } from "../../apiClient/userService";
 import Avatar from "../../components/Avatar";
+import FollowListModal from "../../components/FollowListModal";
 import useAuth from "../../hooks/useAuth";
 import { Activity } from "../../interfaces/activity";
 import { UserProfileRelations } from "../../interfaces/user";
@@ -16,19 +18,26 @@ function Profile() {
   let [searchParams] = useSearchParams();
   const userParamsId = Number(searchParams.get("user"));
 
+  const [showFollowerListModal, setShowFollowerListModal] = useState<boolean>(false);
+  const [showFollowingListModal, setShowFollowingListModal] = useState<boolean>(false);
+
   const [profile, setProfile] = useState<UserProfileRelations>({
     id: 0,
-    fullName: '',
-    avatarUrl: '',
-    followingNumber: 0,
-    followingRelation: [],
-    followerNumber: 0,
-    followerRelation: [],
+    full_name: '',
+    avatar_url: '',
+    following_number: 0,
+    following_relation: [],
+    follower_number: 0,
+    follower_relation: [],
   });
-
   const [activities, setActivities] = useState<Activity[]>([]);
-
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
+  const handleCloseFollowerListModal = () => setShowFollowerListModal(false);
+  const handleShowFollowerListModal = () => setShowFollowerListModal(true);
+
+  const handleCloseFollowingListModal = () => setShowFollowingListModal(false);
+  const handleShowFollowingListModal = () => setShowFollowingListModal(true);
 
   useMemo(() => {
     async function listActivities() {
@@ -65,16 +74,7 @@ function Profile() {
       try {
         const response = await getUserProfile(userParamsId);
         const profileData = response.data;
-
-        setProfile({
-          id: profileData.id,
-          fullName: profileData.full_name,
-          avatarUrl: profileData.avatar_url,
-          followingNumber: profileData.following_number,
-          followingRelation: [],
-          followerNumber: profileData.follower_number,
-          followerRelation: [],
-        });
+        setProfile(profileData);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           console.log(`${err.request.status} ${err.request.statusText}`);
@@ -185,13 +185,25 @@ function Profile() {
   return (
     <div className="sm-container d-flex flex-column pt-5">
       <div className="d-flex align-items-start m-auto gap-5">
-        <Avatar avatarUrl={profile.avatarUrl} className="sm-avatar" />
+        <Avatar avatarUrl={profile.avatar_url} className="sm-avatar" />
         <div className="d-flex flex-column">
-          <h4>{profile.fullName}</h4>
-          <div className="d-flex gap-2">
-            <span>{profile.followerNumber} {profile.followerNumber > 1 ? 'followers' : 'follower'}</span>
+          <h4>{profile.full_name}</h4>
+          <div className="d-flex gap-2 align-items-center">
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={handleShowFollowerListModal}
+            >
+              {profile.follower_number} {profile.follower_number > 1 ? 'followers' : 'follower'}
+            </button>
             <span>•</span>
-            <span>{profile.followingNumber} following</span>
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={handleShowFollowingListModal}
+            >
+              {profile.following_number} following
+            </button>
           </div>
         </div>
         {renderButton}
@@ -203,8 +215,46 @@ function Profile() {
         <h2>Activities</h2>
         {renderActivities}
       </div>
+
+      <FollowListModal
+        title="Followers"
+        show={showFollowerListModal}
+        handleClose={handleCloseFollowerListModal}
+      >
+        {profile.follower_relation.length > 0 ?
+          (
+            <ListGroup>
+              {profile.follower_relation.map(({ id, follower_user_name }) => (
+                <ListGroup.Item key={id}>
+                  {follower_user_name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          ) : <p className="fst-italic text-center">No followers</p>
+        }
+      </FollowListModal>
+
+      <FollowListModal
+        title="Following"
+        show={showFollowingListModal}
+        handleClose={handleCloseFollowingListModal}
+      >
+        {profile.following_relation.length > 0 ?
+          (
+            <ListGroup>
+              {profile.following_relation.map(({ id, following_user_name }) => (
+                <ListGroup.Item key={id}>
+                  {following_user_name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          ) : <p className="fst-italic text-center">No followers</p>
+        }
+      </FollowListModal>
+
     </div>
   );
+
 }
 
 export default Profile;

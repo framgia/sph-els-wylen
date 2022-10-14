@@ -70,3 +70,13 @@ div.container h2 {
 .caption:first-letter {
   text-transform: uppercase;
 }
+
+.btn-link {
+  color: var(--bs-dark) !important;
+  text-decoration: none !important;
+  padding: 0 !important;
+}
+
+.btn-link:hover {
+  text-decoration: underline !important;
+}
