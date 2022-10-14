@@ -55,10 +55,10 @@ class LessonSerializer(serializers.ModelSerializer):
     ]
   
   def get_score(self, obj):
-    return len(obj.answers.filter(is_correct=True))
+    return obj.answers.filter(is_correct=True).count()
 
   def get_total(self, obj):
-    return len(obj.answers.filter())
+    return obj.answers.count()
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -139,6 +139,7 @@ class FollowerSerializer(serializers.ModelSerializer):
   def get_follower_name(self, obj):
     return f'{obj.follower_user.first_name} {obj.follower_user.last_name}'
 
+
 class UserActivitySerializer(serializers.ModelSerializer):
   user_name = serializers.SerializerMethodField('get_full_name')
   user_avatar_url = serializers.CharField(source='user.avatar_url', read_only=True)
@@ -175,13 +176,13 @@ class UserActivitySerializer(serializers.ModelSerializer):
   def get_score(self, obj):
     score = None
     if obj.lesson:
-      score = len(obj.lesson.answers.filter(is_correct=True))
+      score = obj.lesson.answers.filter(is_correct=True).count()
     return score
 
   def get_total(self, obj):
     total = None
     if obj.lesson:
-      total = len(obj.lesson.answers.filter())
+      total = obj.lesson.answers.count()
     return total
 
 
@@ -212,7 +213,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     return f'{obj.first_name} {obj.last_name}'
 
   def get_following_number(self, obj):
-    return len(obj.following_relation.filter())
+    return obj.following_relation.count()
 
   def get_follower_number(self, obj):
-    return len(obj.follower_relation.filter())
+    return obj.follower_relation.count()
