@@ -12,6 +12,8 @@ enum ApiUrls {
   CHOICE = "choices/",
   LESSON = "lessons/",
   ANSWER = "answers/",
+  FOLLOW = "follow/",
+  UNFOLLOW = "unfollow/",
 }
 
 export default ApiUrls;
