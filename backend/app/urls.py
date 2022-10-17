@@ -41,5 +41,6 @@ urlpatterns = [
 
     path('relation_exists', views.check_relation_exists, name='check_relation_exists'),
     path('get_relation', views.get_relation, name='get_relation'),
+    path('get_lessons_words_learned', views.get_words_lessons_number, name='get_lessons_words_learned'),
 
 ]

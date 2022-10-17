@@ -305,3 +305,21 @@ def get_relation(request):
     relation = all_relations.get(follower_user=follower, following_user=following)
     relation_serializer = UserRelationSerializer(relation)
     return Response(relation_serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_words_lessons_number(request):
+  lessons = Lesson.objects.all()
+  user = request.query_params.get('user')
+  if user:
+    lessons = lessons.filter(user_id=user)
+    lessons_learned = lessons.count()
+    words_learned = 0
+    for item in lessons:
+      words_learned += item.answers.count()
+
+  return Response({
+    'lessons_learned': lessons_learned,
+    'words_learned': words_learned,
+  })
